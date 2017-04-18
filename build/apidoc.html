@@ -61,12 +61,208 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.express-mysql-session">module express-mysql-session</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.express-mysql-session.express-mysql-session">
+            function <span class="apidocSignatureSpan"></span>express-mysql-session
+            <span class="apidocSignatureSpan">(session)</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.express-mysql-session" id="apidoc.module.express-mysql-session">module express-mysql-session</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.express-mysql-session.express-mysql-session" id="apidoc.element.express-mysql-session.express-mysql-session">
+        function <span class="apidocSignatureSpan"></span>express-mysql-session
+        <span class="apidocSignatureSpan">(session)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">express-mysql-session = function (session) {
+
+	var constructorArgs;
+
+	if (typeof session.Store === &#x27;undefined&#x27;) {
+		session = require(&#x27;express-session&#x27;);
+		constructorArgs = Array.prototype.slice.call(arguments);
+	}
+
+	var Store = session.Store;
+
+	var MySQLStore = function(options, connection, cb) {
+
+		debug_log(&#x27;Creating session store&#x27;);
+
+		this.options = this.clone(options || {});
+		this.setDefaultOptions();
+
+		if (this.options.debug) {
+			deprecate(&#x27;The \&#x27;debug\&#x27; option has been removed. This module now uses the debug module to output logs and error messages. Run
+ your app with `DEBUG=express-mysql-session* node your-app.js` to have all logs and errors outputted to the console.&#x27;);
+		}
+
+		if (typeof connection === &#x27;function&#x27;) {
+			cb = connection;
+			connection = null;
+		}
+
+		this.connection = connection || mysql.createPool(this.options);
+
+		var done = function() {
+
+			this.setExpirationInterval();
+
+			if (cb) {
+				cb.apply(undefined, arguments);
+			}
+
+		}.bind(this);
+
+		if (!this.options.createDatabaseTable) {
+			setTimeout(done, 0);
+			return;
+		}
+
+		this.createDatabaseTable(done);
+	};
+
+	util.inherits(MySQLStore, Store);
+
+	MySQLStore.prototype.setDefaultOptions = function() {
+
+		debug_log(&#x27;Setting default options&#x27;);
+
+		this.options = this.defaults(this.options, defaultOptions, { recursive: true });
+	};
+
+	MySQLStore.prototype.createDatabaseTable = function(cb) {
+
+		debug_log(&#x27;Creating sessions database table&#x27;);
+
+		var fs = require(&#x27;fs&#x27;);
+
+		fs.readFile(__dirname + &#x27;/../schema.sql&#x27;, &#x27;utf-8&#x27;, function(error, sql) {
+
+			if (error) {
+				return cb &#x26;&#x26; cb(error);
+			}
+
+			sql = sql.replace(/`[^`]+`/g, &#x27;??&#x27;);
+
+			var params = [
+				this.options.schema.tableName,
+				this.options.schema.columnNames.session_id,
+				this.options.schema.columnNames.expires,
+				this.options.schema.columnNames.data,
+				this.options.schema.columnNames.session_id
+			];
+
+			this.connection.query(sql, params, function(error) {
+
+				if (error) {
+					debug_error(&#x27;Failed to create sessions database table.&#x27;);
+					debug_error(error);
+					return cb &#x26;&#x26; cb(error);
+				}
+
+				cb &#x26;&#x26; cb();
+			});
+
+		}.bind(this));
+	};
+
+	MySQLStore.prototype.get = function(session_id, cb) {
+
+		debug_log(&#x27;Getting session: &#x27; + session_id);
+
+		var sql = &#x27;SELECT ?? AS data FROM ?? WHERE ?? = ? LIMIT 1&#x27;;
+
+		var params = [
+			this.options.schema.columnNames.data,
+			this.options.schema.tableName,
+			this.options.schema.columnNames.session_id,
+			session_id
+		];
+
+		this.connection.query(sql, params, function(error, rows) {
+
+			if (error) {
+				debug_error(&#x27;Failed to get session.&#x27;);
+				debug_error(error);
+				return cb(error, null);
+			}
+
+			try {
+				var session = rows[0] ? JSON.parse(rows[0].data) : null;
+			} catch (error) {
+				debug_error(error);
+				return cb(new Error(&#x27;Failed to parse data for session: &#x27; + session_id));
+			}
+
+			cb(null, session);
+		});
+	};
+
+	MySQLStore.prototype.set = function(session_id, data, cb) {
+
+		debug_log(&#x27;Setting session: &#x27; + session_id);
+
+		var expires;
+
+		if (data.cookie) {
+			if (data.cookie.expires) {
+				expires = data.cookie.expires;
+			} else if (data.cookie._expires) {
+				expires = data.cookie._expires;
+			}
+		}
+
+		if (!expires) {
+			expires = Date.now() + this.options.expiration;
+		}
+
+		if (!(expires instanceof Date)) {
+			expires = new Date(expires);
+		}
+
+		// Use whole seconds here; not milliseconds.
+		expires = Math.round(expires.getTime() / 1000);
+
+		data = JSON.stringify(data);
+
+		var sql = &#x27;INSERT INTO ?? (??, ??, ??) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE ?? = VALUES(??), ?? = VALUES(??)&#x27;;
+
+		var params = [
+			this.options.schema.tableName,
+			this.options.schema.columnNames.session_id,
+			this.options.schema.columnNames.expires,
+			this.options.schema.columnNames.data,
+			session_id,
+			expires,
+			data,
+			this.options.schema.columnNames.expires,
+			this.options.schema.columnNames.expires,
+			this.options.schema.columnNames.data,
+			this.options.schema.columnNames.data
+		];
+
+		this.connection.query(sql, params, function(error) {
+
+			if (error) {
+				debug_error(&#x27;Failed to insert session data.&#x27;);
+				debug_error(error);
+				return cb &#x26;&#x26; cb(error);
+			} ...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 </div>
 

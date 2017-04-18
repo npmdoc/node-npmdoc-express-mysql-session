@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="https://github.com/chill117/express-mysql-session#readme"
-
-    >express-mysql-session (v1.2.0)</a>
+    <a href="https://github.com/chill117/express-mysql-session#readme">express-mysql-session (v1.2.0)</a>
 </h1>
 <h4>A MySQL session store for express.js</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.express-mysql-session">module express-mysql-session</a><ol>
 
@@ -89,8 +82,8 @@
 
 	var constructorArgs;
 
-	if (typeof session.Store === &#x27;undefined&#x27;) {
-		session = require(&#x27;express-session&#x27;);
+	if (typeof session.Store === 'undefined') {
+		session = require('express-session');
 		constructorArgs = Array.prototype.slice.call(arguments);
 	}
 
@@ -98,17 +91,17 @@
 
 	var MySQLStore = function(options, connection, cb) {
 
-		debug_log(&#x27;Creating session store&#x27;);
+		debug_log('Creating session store');
 
 		this.options = this.clone(options || {});
 		this.setDefaultOptions();
 
 		if (this.options.debug) {
-			deprecate(&#x27;The \&#x27;debug\&#x27; option has been removed. This module now uses the debug module to output logs and error messages. Run
- your app with `DEBUG=express-mysql-session* node your-app.js` to have all logs and errors outputted to the console.&#x27;);
+			deprecate('The \'debug\' option has been removed. This module now uses the debug module to output logs and error messages. Run
+ your app with `DEBUG=express-mysql-session* node your-app.js` to have all logs and errors outputted to the console.');
 		}
 
-		if (typeof connection === &#x27;function&#x27;) {
+		if (typeof connection === 'function') {
 			cb = connection;
 			connection = null;
 		}
@@ -137,24 +130,24 @@
 
 	MySQLStore.prototype.setDefaultOptions = function() {
 
-		debug_log(&#x27;Setting default options&#x27;);
+		debug_log('Setting default options');
 
 		this.options = this.defaults(this.options, defaultOptions, { recursive: true });
 	};
 
 	MySQLStore.prototype.createDatabaseTable = function(cb) {
 
-		debug_log(&#x27;Creating sessions database table&#x27;);
+		debug_log('Creating sessions database table');
 
-		var fs = require(&#x27;fs&#x27;);
+		var fs = require('fs');
 
-		fs.readFile(__dirname + &#x27;/../schema.sql&#x27;, &#x27;utf-8&#x27;, function(error, sql) {
+		fs.readFile(__dirname + '/../schema.sql', 'utf-8', function(error, sql) {
 
 			if (error) {
-				return cb &#x26;&#x26; cb(error);
+				return cb &amp;&amp; cb(error);
 			}
 
-			sql = sql.replace(/`[^`]+`/g, &#x27;??&#x27;);
+			sql = sql.replace(/`[^`]+`/g, '??');
 
 			var params = [
 				this.options.schema.tableName,
@@ -167,12 +160,12 @@
 			this.connection.query(sql, params, function(error) {
 
 				if (error) {
-					debug_error(&#x27;Failed to create sessions database table.&#x27;);
+					debug_error('Failed to create sessions database table.');
 					debug_error(error);
-					return cb &#x26;&#x26; cb(error);
+					return cb &amp;&amp; cb(error);
 				}
 
-				cb &#x26;&#x26; cb();
+				cb &amp;&amp; cb();
 			});
 
 		}.bind(this));
@@ -180,9 +173,9 @@
 
 	MySQLStore.prototype.get = function(session_id, cb) {
 
-		debug_log(&#x27;Getting session: &#x27; + session_id);
+		debug_log('Getting session: ' + session_id);
 
-		var sql = &#x27;SELECT ?? AS data FROM ?? WHERE ?? = ? LIMIT 1&#x27;;
+		var sql = 'SELECT ?? AS data FROM ?? WHERE ?? = ? LIMIT 1';
 
 		var params = [
 			this.options.schema.columnNames.data,
@@ -194,7 +187,7 @@
 		this.connection.query(sql, params, function(error, rows) {
 
 			if (error) {
-				debug_error(&#x27;Failed to get session.&#x27;);
+				debug_error('Failed to get session.');
 				debug_error(error);
 				return cb(error, null);
 			}
@@ -203,7 +196,7 @@
 				var session = rows[0] ? JSON.parse(rows[0].data) : null;
 			} catch (error) {
 				debug_error(error);
-				return cb(new Error(&#x27;Failed to parse data for session: &#x27; + session_id));
+				return cb(new Error('Failed to parse data for session: ' + session_id));
 			}
 
 			cb(null, session);
@@ -212,7 +205,7 @@
 
 	MySQLStore.prototype.set = function(session_id, data, cb) {
 
-		debug_log(&#x27;Setting session: &#x27; + session_id);
+		debug_log('Setting session: ' + session_id);
 
 		var expires;
 
@@ -237,7 +230,7 @@
 
 		data = JSON.stringify(data);
 
-		var sql = &#x27;INSERT INTO ?? (??, ??, ??) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE ?? = VALUES(??), ?? = VALUES(??)&#x27;;
+		var sql = 'INSERT INTO ?? (??, ??, ??) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE ?? = VALUES(??), ?? = VALUES(??)';
 
 		var params = [
 			this.options.schema.tableName,
@@ -256,9 +249,9 @@
 		this.connection.query(sql, params, function(error) {
 
 			if (error) {
-				debug_error(&#x27;Failed to insert session data.&#x27;);
+				debug_error('Failed to insert session data.');
 				debug_error(error);
-				return cb &#x26;&#x26; cb(error);
+				return cb &amp;&amp; cb(error);
 			} ...</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -272,3 +265,4 @@
     ]
 </div>
 </div>
+</body></html>
