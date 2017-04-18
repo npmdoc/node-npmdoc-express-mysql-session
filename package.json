@@ -1,7 +1,7 @@
 {
     "author": "kai zhu <kaizhu256@gmail.com>",
     "buildNpmdoc": "express-mysql-session",
-    "description": "api documentation for [express-mysql-session (v1.2.0)](https://github.com/chill117/express-mysql-session#readme) [![npm package](https://img.shields.io/npm/v/npmdoc-express-mysql-session.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-mysql-session) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-mysql-session.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-mysql-session)",
+    "description": "#### api documentation for  [express-mysql-session (v1.2.0)](https://github.com/chill117/express-mysql-session#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-express-mysql-session.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-mysql-session) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-mysql-session.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-mysql-session)",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "express-mysql-session": "*",
@@ -36,5 +36,5 @@
         "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
         "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
     },
-    "version": "0.0.1"
+    "version": "0.0.2"
 }

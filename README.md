@@ -1,9 +1,14 @@
-# api documentation for  [express-mysql-session (v1.2.0)](https://github.com/chill117/express-mysql-session#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-express-mysql-session.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-mysql-session) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-mysql-session.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-mysql-session)
+# npmdoc-express-mysql-session
+
+#### api documentation for  [express-mysql-session (v1.2.0)](https://github.com/chill117/express-mysql-session#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-express-mysql-session.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-mysql-session) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-mysql-session.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-mysql-session)
+
 #### A MySQL session store for express.js
 
-[![NPM](https://nodei.co/npm/express-mysql-session.png?downloads=true)](https://www.npmjs.com/package/express-mysql-session)
+[![NPM](https://nodei.co/npm/express-mysql-session.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/express-mysql-session)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-express-mysql-session/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-express-mysql-session_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-express-mysql-session/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-express-mysql-session/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-express-mysql-session/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-express-mysql-session/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-express-mysql-session/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-express-mysql-session/build/screenCapture.npmPackageListing.svg)
 
@@ -17,8 +22,7 @@
 
 {
     "author": {
-        "name": "Charles Hill",
-        "email": "chill@degreesofzero.com"
+        "name": "Charles Hill"
     },
     "bugs": {
         "url": "https://github.com/chill117/express-mysql-session/issues"
@@ -55,13 +59,11 @@
     "main": "index.js",
     "maintainers": [
         {
-            "name": "chill1",
-            "email": "chill@degreesofzero.com"
+            "name": "chill1"
         }
     ],
     "name": "express-mysql-session",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git://github.com/chill117/express-mysql-session.git"
@@ -72,16 +74,6 @@
     "version": "1.2.0"
 }
 ```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module express-mysql-session](#apidoc.module.express-mysql-session)
-
-
-
-# <a name="apidoc.module.express-mysql-session"></a>[module express-mysql-session](#apidoc.module.express-mysql-session)
 
 
 
