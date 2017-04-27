@@ -1,6 +1,6 @@
 # npmdoc-express-mysql-session
 
-#### api documentation for  [express-mysql-session (v1.2.0)](https://github.com/chill117/express-mysql-session#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-express-mysql-session.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-mysql-session) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-mysql-session.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-mysql-session)
+#### basic api documentation for  [express-mysql-session (v1.2.0)](https://github.com/chill117/express-mysql-session#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-express-mysql-session.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-express-mysql-session) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-express-mysql-session.svg)](https://travis-ci.org/npmdoc/node-npmdoc-express-mysql-session)
 
 #### A MySQL session store for express.js
 
@@ -71,7 +71,8 @@
     "scripts": {
         "test": "grunt test"
     },
-    "version": "1.2.0"
+    "version": "1.2.0",
+    "bin": {}
 }
 ```
 
